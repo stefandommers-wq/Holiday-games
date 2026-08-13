@@ -37,11 +37,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      # enablement zet Pages zo nodig zelf aan, zodat de eerste publicatie niet
-      # strandt op een instelling die nog uitstaat.
+      # Let op: Pages moet eenmalig aan staan onder Settings > Pages met
+      # Source op "GitHub Actions". De workflow-token mag dat zelf niet
+      # aanzetten, dus enablement heeft hier geen zin.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
