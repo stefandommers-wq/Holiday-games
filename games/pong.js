@@ -10,8 +10,12 @@ import { createSurface } from '../shared/surface.js';
 import { createLoop } from '../shared/loop.js';
 import { createInput } from '../shared/input.js';
 import { createChooser } from '../shared/chooser.js';
+import {
+  FIELD_W, createBall, launchBall, moveBall, bounceSides,
+  hitsPaddle, reflectPaddle, clampPaddle as clampToField,
+} from '../shared/physics.js';
 
-const W = 100;                 // veldbreedte in eenheden
+const W = FIELD_W;             // veldbreedte in eenheden
 const WIN_SCORE = 11;
 const PADDLE_W = 22;
 const PADDLE_H = 2.6;
@@ -49,7 +53,7 @@ function newGame(level = 'normaal') {
     streak: 0,
     phase: 'choose',        // choose | serve | play | won | lost
     timer: 0,
-    ball: { x: W / 2, y: H / 2, vx: 0, vy: 0, speed: SPEED_START },
+    ball: createBall(W / 2, H / 2, SPEED_START),
     you_x: W / 2,
     cpu_x: W / 2,
     aiTarget: W / 2,
@@ -63,10 +67,11 @@ function resetBall(toward) {
   const b = game.ball;
   b.x = W / 2;
   b.y = H / 2;
-  b.speed = SPEED_START;
-  const angle = (Math.random() * 0.5 - 0.25) + (toward === 'cpu' ? -Math.PI / 2 : Math.PI / 2);
-  b.vx = Math.cos(angle) * b.speed;
-  b.vy = Math.sin(angle) * b.speed;
+  b.prevX = b.x;
+  b.prevY = b.y;
+  // Hoek 0 is recht omlaag; naar de computer toe is dus rond een halve slag.
+  const angle = (Math.random() * 0.5 - 0.25) + (toward === 'cpu' ? Math.PI : 0);
+  launchBall(b, angle, SPEED_START);
   game.sightings = [{ t: game.aiClock, x: b.x, vy: b.vy }];
   game.phase = 'serve';
   game.timer = 0.9;
@@ -83,12 +88,12 @@ function updateHud() {
 /* ---------------- Fysica ---------------- */
 
 function bounceOffPaddle(paddleX, goingDown) {
-  const b = game.ball;
-  const offset = Math.max(-1, Math.min(1, (b.x - paddleX) / (PADDLE_W / 2)));
-  const angle = offset * 1.0;              // maximaal ongeveer 57 graden
-  b.speed = Math.min(SPEED_MAX, b.speed * SPEED_STEP);
-  b.vx = Math.sin(angle) * b.speed;
-  b.vy = Math.cos(angle) * b.speed * (goingDown ? 1 : -1);
+  reflectPaddle(game.ball, paddleX, PADDLE_W / 2, {
+    down: goingDown,
+    maxAngle: 1.0,             // maximaal ongeveer 57 graden
+    speedStep: SPEED_STEP,
+    speedMax: SPEED_MAX,
+  });
   api.audio.bounce();
 }
 
@@ -121,30 +126,22 @@ function point(who) {
 
 function stepPhysics(dt) {
   const b = game.ball;
-  const prevY = b.y;
-  b.x += b.vx * dt;
-  b.y += b.vy * dt;
+  moveBall(b, dt);
 
-  // Zijkanten
-  if (b.x < BALL_R) { b.x = BALL_R; b.vx = Math.abs(b.vx); api.audio.blip(); }
-  if (b.x > W - BALL_R) { b.x = W - BALL_R; b.vx = -Math.abs(b.vx); api.audio.blip(); }
+  if (bounceSides(b, BALL_R, W)) api.audio.blip();
 
   // Peddel van de speler (onder)
   const youY = H - EDGE;
-  if (b.vy > 0 && prevY + BALL_R <= youY && b.y + BALL_R >= youY) {
-    if (Math.abs(b.x - game.you_x) <= PADDLE_W / 2 + BALL_R * 0.6) {
-      b.y = youY - BALL_R;
-      bounceOffPaddle(game.you_x, false);
-    }
+  if (hitsPaddle(b, BALL_R, youY, game.you_x, PADDLE_W / 2, { down: true })) {
+    b.y = youY - BALL_R;
+    bounceOffPaddle(game.you_x, false);
   }
 
   // Peddel van de computer (boven)
   const cpuY = EDGE;
-  if (b.vy < 0 && prevY - BALL_R >= cpuY && b.y - BALL_R <= cpuY) {
-    if (Math.abs(b.x - game.cpu_x) <= PADDLE_W / 2 + BALL_R * 0.6) {
-      b.y = cpuY + BALL_R;
-      bounceOffPaddle(game.cpu_x, true);
-    }
+  if (hitsPaddle(b, BALL_R, cpuY, game.cpu_x, PADDLE_W / 2, { down: false })) {
+    b.y = cpuY + BALL_R;
+    bounceOffPaddle(game.cpu_x, true);
   }
 
   if (b.y > H + 4) point('cpu');
@@ -176,7 +173,7 @@ function stepAi(dt) {
 }
 
 function clampPaddle(x) {
-  return Math.max(PADDLE_W / 2, Math.min(W - PADDLE_W / 2, x));
+  return clampToField(x, PADDLE_W / 2, W);
 }
 
 /* ---------------- Tekenen ---------------- */
@@ -392,13 +389,10 @@ export function restore(state) {
   game.streak = state.streak || 0;
   game.you_x = clampPaddle(state.youX ?? W / 2);
   game.cpu_x = clampPaddle(state.cpuX ?? W / 2);
-  game.ball = {
-    x: state.ball.x,
-    y: Math.max(BALL_R, Math.min(H - BALL_R, state.ball.y * H)),
-    vx: state.ball.vx,
-    vy: state.ball.vy,
-    speed: state.ball.speed,
-  };
+  const by = Math.max(BALL_R, Math.min(H - BALL_R, state.ball.y * H));
+  game.ball = createBall(state.ball.x, by, state.ball.speed);
+  game.ball.vx = state.ball.vx;
+  game.ball.vy = state.ball.vy;
   game.phase = 'serve';
   game.timer = 1.0;
   updateHud();
