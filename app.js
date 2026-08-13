@@ -6,6 +6,10 @@ import { storage } from './shared/storage.js';
 import { audio } from './shared/audio.js';
 import { dialog, closeAnyDialog, isDialogOpen, setHud, statsHtml, escapeHtml } from './shared/ui.js';
 
+// Loopt gelijk met CACHE_VERSION in sw.js, zodat je op het toestel kunt zien
+// welke versie er draait.
+const APP_VERSION = 'v7';
+
 const screens = {
   menu: document.getElementById('screen-menu'),
   game: document.getElementById('screen-game'),
@@ -69,9 +73,62 @@ async function onRoute() {
   }
 }
 
+/* ---------------- Beginscherm-hint ---------------- */
+
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+}
+
+function isIOS() {
+  return /iPhone|iPad|iPod/i.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function installSteps() {
+  if (isIOS()) {
+    return `<ol>
+      <li>Tik op de deelknop onderin Safari (het vierkantje met de pijl omhoog).</li>
+      <li>Kies <b>Zet op beginscherm</b>.</li>
+      <li>Start Arcade voortaan vanaf het beginscherm.</li>
+    </ol>`;
+  }
+  return `<ol>
+    <li>Tik op de menuknop van je browser (drie puntjes).</li>
+    <li>Kies <b>App installeren</b> of <b>Toevoegen aan startscherm</b>.</li>
+    <li>Start Arcade voortaan vanaf het beginscherm.</li>
+  </ol>`;
+}
+
+function renderInstallHint() {
+  const holder = document.getElementById('install-hint');
+  if (!holder) return;
+  const settings = storage.getSettings();
+  if (isStandalone() || settings.installHintDismissed) {
+    holder.innerHTML = '';
+    holder.hidden = true;
+    return;
+  }
+  holder.hidden = false;
+  holder.innerHTML = `
+    <div class="hint-card">
+      <b>Zet Arcade op je beginscherm</b>
+      ${installSteps()}
+      <p style="margin:10px 0 0;color:var(--muted);font-size:12px;">
+        Daarna werkt alles ook zonder internet.</p>
+      <button class="btn secondary" id="hint-dismiss" type="button">Niet meer tonen</button>
+    </div>
+  `;
+  holder.querySelector('#hint-dismiss').addEventListener('click', () => {
+    storage.updateSettings({ installHintDismissed: true });
+    renderInstallHint();
+  });
+}
+
 /* ---------------- Menu ---------------- */
 
 function renderMenu() {
+  renderInstallHint();
   tilesEl.innerHTML = '';
   for (const def of GAMES) {
     const li = document.createElement('li');
@@ -304,11 +361,19 @@ function renderSettings() {
       <span class="label">D-pad bij Snake<small>Knoppen onderaan naast swipen</small></span>
       <button class="switch" id="set-dpad" role="switch" aria-checked="${s.dpad}" aria-label="D-pad"></button>
     </div>
+    <p class="section-title">Op je beginscherm</p>
+    ${isStandalone()
+      ? '<div class="hint-card">Arcade draait al vanaf je beginscherm. Alles werkt nu ook zonder internet.</div>'
+      : `<div class="hint-card"><b>Zo zet je Arcade op je beginscherm</b>${installSteps()}</div>`}
     <p class="section-title">Gegevens</p>
     <button class="btn secondary" id="set-export" type="button">Scores exporteren</button>
     <button class="btn danger" id="set-wipe" type="button">Alles wissen</button>
     <p class="footnote">Scores staan alleen op dit toestel. Verwijder je de app van het beginscherm, dan gaan ze weg.</p>
+    <p class="footnote" id="version-note"></p>
   `;
+
+  const note = settingsBodyEl.querySelector('#version-note');
+  if (note) note.textContent = `Arcade ${APP_VERSION}`;
 
   settingsBodyEl.querySelector('#set-sound').addEventListener('click', (ev) => {
     const next = !(storage.getSettings().sound);
