@@ -4,7 +4,7 @@
 import { GAMES, GAME_IDS, findGame } from './shared/catalog.js';
 import { storage } from './shared/storage.js';
 import { audio } from './shared/audio.js';
-import { dialog, closeAnyDialog, setHud, statsHtml, escapeHtml } from './shared/ui.js';
+import { dialog, closeAnyDialog, isDialogOpen, setHud, statsHtml, escapeHtml } from './shared/ui.js';
 
 const screens = {
   menu: document.getElementById('screen-menu'),
@@ -258,6 +258,7 @@ async function handleGameOver({ score = 0, level = null, title = 'Game over', st
   if (def.levels && typeof level === 'number') storage.submitProgress(def.id, level);
   storage.clearState(def.id);
   session.paused = true;
+  session.over = true;
   session.module.pause?.();
   audio.gameOver();
 
@@ -283,6 +284,7 @@ async function handleGameOver({ score = 0, level = null, title = 'Game over', st
     session.module.stop();
     controlsEl.innerHTML = '';
     session.paused = false;
+    session.over = false;
     startModule(null);
   } else {
     go('#/');
@@ -376,12 +378,26 @@ document.addEventListener('visibilitychange', () => {
     pauseSession();
   } else {
     audio.resume();
+    onReturn();
   }
 });
 window.addEventListener('pagehide', () => {
   saveSession();
   pauseSession();
 });
+// Komt de pagina terug uit de bfcache van Safari, dan is er geen
+// visibilitychange. Zonder dit blijft het spel voorgoed gepauzeerd staan.
+window.addEventListener('pageshow', () => {
+  audio.resume();
+  onReturn();
+});
+
+// Terug in beeld: niet zomaar verder spelen, maar het pauzepaneel tonen.
+function onReturn() {
+  if (!session || !session.paused || session.over) return;
+  if (isDialogOpen() || document.hidden) return;
+  showPauseDialog();
+}
 
 // Eerste tik ontgrendelt de AudioContext.
 document.addEventListener('pointerdown', () => audio.unlock(), { once: true, passive: true });

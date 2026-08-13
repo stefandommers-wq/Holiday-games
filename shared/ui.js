@@ -67,6 +67,10 @@ export function closeAnyDialog() {
   closeDialog?.(null);
 }
 
+export function isDialogOpen() {
+  return closeDialog !== null;
+}
+
 export function statsHtml(items) {
   return `<div class="stats">${items
     .map((it) => `<div class="stat"><span>${escapeHtml(it.label)}</span><b>${escapeHtml(String(it.value))}</b></div>`)
