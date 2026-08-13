@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Arcade</title>
+<meta name="description" content="Vijf klassieke spelletjes, volledig offline.">
+<meta name="theme-color" content="#0b0d17">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Arcade">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" href="./icons/icon-192.png" sizes="192x192">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- Menu -->
+  <section class="screen" id="screen-menu" data-screen="menu">
+    <header class="topbar">
+      <h1 class="wordmark">Arcade</h1>
+      <button class="icon-btn" id="btn-settings" type="button" aria-label="Instellingen">&#9881;</button>
+    </header>
+    <div class="scroll">
+      <p class="tagline">Vijf klassiekers. Werkt zonder internet.</p>
+      <ul class="tiles" id="tiles"></ul>
+      <p class="footnote" id="menu-footnote">Tik op een spel om te beginnen.</p>
+    </div>
+  </section>
+
+  <!-- Spel -->
+  <section class="screen" id="screen-game" data-screen="game" hidden>
+    <header class="topbar game-topbar">
+      <button class="icon-btn" id="btn-back" type="button" aria-label="Terug naar menu">&#8249;</button>
+      <h2 class="game-title" id="game-title">Spel</h2>
+      <button class="icon-btn" id="btn-pause" type="button" aria-label="Pauze">&#10073;&#10073;</button>
+    </header>
+    <div class="hud" id="hud"></div>
+    <div class="stage" id="stage">
+      <canvas id="game-canvas"></canvas>
+      <div class="controls" id="controls"></div>
+    </div>
+  </section>
+
+  <!-- Instellingen -->
+  <section class="screen" id="screen-settings" data-screen="settings" hidden>
+    <header class="topbar">
+      <button class="icon-btn" id="btn-settings-back" type="button" aria-label="Terug naar menu">&#8249;</button>
+      <h2 class="game-title">Instellingen</h2>
+      <span class="icon-btn ghost" aria-hidden="true"></span>
+    </header>
+    <div class="scroll" id="settings-body"></div>
+  </section>
+
+</div>
+
+<!-- Dialoog-laag, gedeeld door schil en spellen -->
+<div class="overlay" id="overlay" hidden>
+  <div class="panel" id="overlay-panel" role="dialog" aria-modal="true"></div>
+</div>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>
