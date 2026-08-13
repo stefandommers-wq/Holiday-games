@@ -109,14 +109,14 @@ function renderInstallHint() {
     holder.hidden = true;
     return;
   }
+  const how = isIOS()
+    ? 'deelknop onderin Safari → <b>Zet op beginscherm</b>'
+    : 'browsermenu → <b>Toevoegen aan startscherm</b>';
   holder.hidden = false;
   holder.innerHTML = `
-    <div class="hint-card">
-      <b>Zet Arcade op je beginscherm</b>
-      ${installSteps()}
-      <p style="margin:10px 0 0;color:var(--muted);font-size:12px;">
-        Daarna werkt alles ook zonder internet.</p>
-      <button class="btn secondary" id="hint-dismiss" type="button">Niet meer tonen</button>
+    <div class="hint-card compact">
+      <span><b>Zet Arcade op je beginscherm</b><br>${how}. Daarna werkt alles zonder internet.</span>
+      <button class="link-btn" id="hint-dismiss" type="button" aria-label="Hint niet meer tonen">Sluiten</button>
     </div>
   `;
   holder.querySelector('#hint-dismiss').addEventListener('click', () => {
