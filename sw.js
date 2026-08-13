@@ -2,7 +2,7 @@
 // Bij elke wijziging aan de bestandenlijst CACHE_VERSION ophogen, anders blijft
 // een toestel op de oude versie hangen.
 
-const CACHE_VERSION = 'arcade-v2';
+const CACHE_VERSION = 'arcade-v3';
 
 const PRECACHE = [
   './',
@@ -17,6 +17,7 @@ const PRECACHE = [
   './shared/input.js',
   './shared/audio.js',
   './shared/ui.js',
+  './shared/chooser.js',
   './games/placeholder.js',
   './games/snake.js',
   './games/pong.js',
