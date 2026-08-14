@@ -8,7 +8,7 @@ import { dialog, closeAnyDialog, isDialogOpen, setHud, statsHtml, escapeHtml } f
 
 // Loopt gelijk met CACHE_VERSION in sw.js, zodat je op het toestel kunt zien
 // welke versie er draait.
-const APP_VERSION = 'v7';
+const APP_VERSION = 'v8';
 
 const screens = {
   menu: document.getElementById('screen-menu'),
@@ -168,6 +168,9 @@ function makeApi(def) {
     id: def.id,
     name: def.name,
     accent: def.accent,
+    // Het hele speelvlak, inclusief de rand rond het canvas. Spellen luisteren
+    // hierop zodat een duim naast het canvas ook nog stuurt.
+    stage: document.getElementById('stage'),
     levelLabel: def.levelLabel || 'Level',
     audio,
     dialog,

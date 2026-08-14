@@ -7,7 +7,11 @@ const SWIPE_MIN = 26;      // CSS-pixels voordat het een swipe heet
 const TAP_MAX_MOVE = 14;   // daaronder is het een tik
 const TAP_MAX_MS = 350;
 
-export function createInput(el, handlers = {}) {
+// el      = waar geluisterd wordt. Meestal het hele speelvlak, zodat een duim
+//           net naast het canvas ook nog stuurt en de pagina niet meeschuift.
+// origin  = waartegen de coördinaten gerekend worden, meestal het canvas.
+// ignore  = CSS-selector voor stukken die hun eigen knoppen hebben (D-pad).
+export function createInput(el, handlers = {}, { origin = null, ignore = null } = {}) {
   const h = {
     onTap: null,
     onSwipe: null,
@@ -16,17 +20,19 @@ export function createInput(el, handlers = {}) {
     onDragEnd: null,
     ...handlers,
   };
+  const coordEl = origin || el;
 
   let active = null;
   let state = null;
 
   function pos(ev) {
-    const rect = el.getBoundingClientRect();
+    const rect = coordEl.getBoundingClientRect();
     return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
   }
 
   function down(ev) {
     if (active !== null) return;
+    if (ignore && ev.target instanceof Element && ev.target.closest(ignore)) return;
     active = ev.pointerId;
     const p = pos(ev);
     el.setPointerCapture?.(ev.pointerId);

@@ -306,11 +306,11 @@ export function start(canvasEl, gameApi) {
   layout();
   game.ball.y = H / 2;
 
-  input = createInput(canvasEl, {
+  input = createInput(api.stage || canvasEl, {
     onDragStart: (x) => onPointer(x),
     onDrag: (x) => onPointer(x),
     onTap: (x, y) => onTap(x, y),
-  });
+  }, { origin: canvasEl });
 
   updateHud();
 

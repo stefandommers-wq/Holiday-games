@@ -390,10 +390,10 @@ export function start(canvasEl, gameApi) {
     if (!game) return;
     game.shipX = clampPaddle(x / scale, SHIP_W / 2, W);
   };
-  input = createInput(canvasEl, {
+  input = createInput(api.stage || canvasEl, {
     onDragStart: moveShip,
     onDrag: moveShip,
-  });
+  }, { origin: canvasEl });
   keys = createKeys({
     ArrowLeft: () => { if (game) moveShip(px(game.shipX - 4)); },
     ArrowRight: () => { if (game) moveShip(px(game.shipX + 4)); },

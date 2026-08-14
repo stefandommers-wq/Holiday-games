@@ -372,11 +372,11 @@ export function start(canvasEl, gameApi) {
   game = newGame(1);
   layout();
 
-  input = createInput(canvasEl, {
+  input = createInput(api.stage || canvasEl, {
     onDragStart: (x) => onMove(x),
     onDrag: (x) => onMove(x),
     onTap: (x, y) => onTap(x, y),
-  });
+  }, { origin: canvasEl });
 
   updateHud();
   startChoice();

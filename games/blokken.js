@@ -317,7 +317,7 @@ export function start(canvasEl, gameApi) {
   // hokjes opschuift. Voor het laten vallen wil je dat juist niet: hooguit
   // één blok per veeg.
   let droppedThisSwipe = false;
-  input = createInput(canvasEl, {
+  input = createInput(api.stage || canvasEl, {
     onDragStart: () => { droppedThisSwipe = false; },
     onSwipe: (dir) => {
       if (dir === 'left') move(-1);
@@ -330,7 +330,7 @@ export function start(canvasEl, gameApi) {
       // omhoog doet niets: te makkelijk per ongeluk
     },
     onTap: () => rotate(),
-  });
+  }, { origin: canvasEl });
   keys = createKeys({
     ArrowLeft: () => move(-1),
     ArrowRight: () => move(1),

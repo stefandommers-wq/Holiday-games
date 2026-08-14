@@ -30,6 +30,11 @@
 html, body {
   margin: 0;
   padding: 0;
+  /* Vastgezet, anders schuift de pagina in Safari mee met je duim tijdens het
+     spelen. Scrollen gebeurt alleen binnen .scroll (menu en instellingen). */
+  position: fixed;
+  inset: 0;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
@@ -222,6 +227,10 @@ body {
 }
 .hud .hud-item { white-space: nowrap; }
 
+/* Tijdens het spelen mag niets meebewegen: geen pannen, geen zoomen,
+   geen rubberband. Het hele spelscherm vangt de aanraking af. */
+#screen-game { touch-action: none; }
+
 .stage {
   position: relative;
   flex: 1 1 auto;
@@ -229,6 +238,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 0 10px calc(8px + var(--safe-b));
+  touch-action: none;
 }
 
 #game-canvas {
@@ -253,22 +263,25 @@ body {
 }
 .controls:empty { display: none; }
 
-/* D-pad (Snake) */
+/* D-pad (Snake). Duimformaat: liever te groot dan te klein. */
 .dpad {
+  --key: clamp(60px, 21vw, 92px);
   display: grid;
-  grid-template-columns: repeat(3, var(--tap));
-  grid-template-rows: repeat(2, var(--tap));
-  gap: 8px;
+  grid-template-columns: repeat(3, var(--key));
+  grid-template-rows: repeat(2, var(--key));
+  gap: 10px;
 }
 .dpad button {
-  width: var(--tap);
-  height: var(--tap);
-  font-size: 20px;
+  width: var(--key);
+  height: var(--key);
+  font-size: calc(var(--key) * 0.36);
+  line-height: 1;
   color: var(--text);
-  background: rgba(255, 255, 255, .07);
+  background: rgba(255, 255, 255, .09);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 16px;
   font-family: var(--font);
+  touch-action: none;
 }
 .dpad button:active { background: rgba(255, 255, 255, .18); }
 .dpad .up { grid-column: 2; grid-row: 1; }

@@ -1,13 +1,17 @@
-// Snake. Rasterspel op een vast veld van 15 bij 22, zodat een bewaard potje
-// ook na draaien van het toestel klopt. Besturing: swipen over het speelveld,
-// plus een optioneel D-pad onderaan.
+// Snake. Rasterspel van 15 hokjes breed; het aantal rijen volgt bij een nieuw
+// potje uit de vorm van het speelveld, zodat het beeld gevuld is met of zonder
+// D-pad. Het aantal rijen gaat mee in een bewaard potje, dus draaien of het
+// D-pad aanzetten verpest een lopend spel niet.
+// Besturing: swipen over het hele speelveld, plus een optioneel D-pad.
 
 import { createSurface, roundRect } from '../shared/surface.js';
 import { createLoop } from '../shared/loop.js';
 import { createInput, createKeys } from '../shared/input.js';
 
 const COLS = 15;
-const ROWS = 22;
+const MIN_ROWS = 12;
+const MAX_ROWS = 26;
+const DEFAULT_ROWS = 20;
 const APPLES_PER_LEVEL = 5;
 const OBSTACLE_LEVEL = 4;      // vanaf dit level komen er vaste obstakels
 const BASE_INTERVAL = 0.20;    // seconden per stap in level 1
@@ -35,17 +39,26 @@ let game = null;
 
 /* ---------------- Spelstaat ---------------- */
 
-function newGame() {
+// Zoveel rijen als er netjes in het speelveld passen, met vierkante hokjes.
+function rowsForSurface() {
+  if (!surface || surface.width <= 0) return DEFAULT_ROWS;
+  const wanted = Math.round(COLS * (surface.height / surface.width));
+  return Math.max(MIN_ROWS, Math.min(MAX_ROWS, wanted));
+}
+
+function newGame(rows = DEFAULT_ROWS) {
+  const startY = Math.round(rows * 0.62);
   const snake = [
-    { x: 7, y: 13 },
-    { x: 7, y: 14 },
-    { x: 7, y: 15 },
+    { x: 7, y: startY },
+    { x: 7, y: startY + 1 },
+    { x: 7, y: startY + 2 },
   ];
   return {
+    rows,
     snake,
     dir: 'up',
     queued: [],
-    apple: { x: 7, y: 7 },
+    apple: { x: 7, y: Math.round(rows * 0.3) },
     apples: 0,
     score: 0,
     level: 1,
@@ -69,7 +82,7 @@ function occupied(x, y, ignoreTail = false) {
 
 function placeApple() {
   const free = [];
-  for (let y = 0; y < ROWS; y++) {
+  for (let y = 0; y < game.rows; y++) {
     for (let x = 0; x < COLS; x++) {
       if (!occupied(x, y)) free.push({ x, y });
     }
@@ -89,7 +102,7 @@ function buildObstacles(level) {
     const horizontal = Math.random() < 0.5;
     const len = 2 + Math.floor(Math.random() * 2);
     const x = 1 + Math.floor(Math.random() * (COLS - 2 - (horizontal ? len : 0)));
-    const y = 3 + Math.floor(Math.random() * (ROWS - 6 - (horizontal ? 0 : len)));
+    const y = 3 + Math.floor(Math.random() * Math.max(1, game.rows - 6 - (horizontal ? 0 : len)));
 
     const cells = [];
     for (let i = 0; i < len; i++) {
@@ -137,7 +150,7 @@ function step() {
   const head = game.snake[0];
   const next = { x: head.x + d.x, y: head.y + d.y };
 
-  const hitsWall = next.x < 0 || next.y < 0 || next.x >= COLS || next.y >= ROWS;
+  const hitsWall = next.x < 0 || next.y < 0 || next.x >= COLS || next.y >= game.rows;
   const hitsSelf = game.snake.slice(0, -1).some((s) => s.x === next.x && s.y === next.y);
   const hitsRock = game.obstacles.some((o) => o.x === next.x && o.y === next.y);
 
@@ -176,9 +189,10 @@ function updateHud() {
 
 function layout() {
   const { width, height } = surface;
-  cell = Math.max(4, Math.floor(Math.min(width / COLS, height / ROWS)));
+  const rows = game ? game.rows : DEFAULT_ROWS;
+  cell = Math.max(4, Math.floor(Math.min(width / COLS, height / rows)));
   ox = Math.round((width - cell * COLS) / 2);
-  oy = Math.round((height - cell * ROWS) / 2);
+  oy = Math.round((height - cell * rows) / 2);
 }
 
 function draw() {
@@ -190,13 +204,13 @@ function draw() {
 
   // Speelveld
   ctx.fillStyle = '#080b16';
-  ctx.fillRect(ox, oy, cell * COLS, cell * ROWS);
+  ctx.fillRect(ox, oy, cell * COLS, cell * game.rows);
   ctx.strokeStyle = 'rgba(42, 51, 88, .55)';
   ctx.lineWidth = 1;
-  ctx.strokeRect(ox + .5, oy + .5, cell * COLS - 1, cell * ROWS - 1);
+  ctx.strokeRect(ox + .5, oy + .5, cell * COLS - 1, cell * game.rows - 1);
 
   ctx.fillStyle = 'rgba(42, 51, 88, .35)';
-  for (let y = 1; y < ROWS; y++) {
+  for (let y = 1; y < game.rows; y++) {
     for (let x = 1; x < COLS; x++) {
       ctx.fillRect(ox + x * cell - 1, oy + y * cell - 1, 2, 2);
     }
@@ -204,7 +218,7 @@ function draw() {
 
   if (game.flash > 0) {
     ctx.fillStyle = `rgba(69, 240, 138, ${0.12 * (game.flash / 0.4)})`;
-    ctx.fillRect(ox, oy, cell * COLS, cell * ROWS);
+    ctx.fillRect(ox, oy, cell * COLS, cell * game.rows);
   }
 
   // Obstakels
@@ -261,14 +275,14 @@ function draw() {
 
   if (game.phase === 'ready') {
     ctx.fillStyle = 'rgba(5, 6, 13, .72)';
-    ctx.fillRect(ox, oy, cell * COLS, cell * ROWS);
+    ctx.fillRect(ox, oy, cell * COLS, cell * game.rows);
     ctx.textAlign = 'center';
     ctx.fillStyle = '#45f08a';
     ctx.font = '800 20px -apple-system, system-ui, sans-serif';
-    ctx.fillText('KLAAR?', ox + cell * COLS / 2, oy + cell * ROWS / 2 - 10);
+    ctx.fillText('KLAAR?', ox + cell * COLS / 2, oy + cell * game.rows / 2 - 10);
     ctx.fillStyle = '#8b96bd';
     ctx.font = '400 13px -apple-system, system-ui, sans-serif';
-    ctx.fillText('Swipe of gebruik het D-pad', ox + cell * COLS / 2, oy + cell * ROWS / 2 + 16);
+    ctx.fillText('Swipe of gebruik het D-pad', ox + cell * COLS / 2, oy + cell * game.rows / 2 + 16);
   }
 }
 
@@ -301,28 +315,32 @@ function buildDpad() {
 
 export function start(canvasEl, gameApi) {
   api = gameApi;
-  game = newGame();
+
+  // Eerst het D-pad neerzetten, dan pas meten: die knoppen bepalen mee hoe
+  // hoog het speelveld is en dus hoeveel rijen erin passen.
+  if (gameApi.settings().dpad) {
+    dpadEl = buildDpad();
+    gameApi.setControls(dpadEl);
+  } else {
+    gameApi.setControls(null);
+  }
 
   surface = createSurface(canvasEl, () => { layout(); draw(); });
+  game = newGame(rowsForSurface());
   layout();
 
-  input = createInput(canvasEl, {
+  // Swipen mag over het hele speelvlak, maar niet over het D-pad: die knoppen
+  // sturen zelf.
+  input = createInput(api.stage || canvasEl, {
     onSwipe: (dir) => turn(dir),
     onTap: () => { if (game.phase === 'ready') game.phase = 'playing'; },
-  });
+  }, { origin: canvasEl, ignore: '.dpad' });
   keys = createKeys({
     ArrowUp: () => turn('up'),
     ArrowDown: () => turn('down'),
     ArrowLeft: () => turn('left'),
     ArrowRight: () => turn('right'),
   });
-
-  if (api.settings().dpad) {
-    dpadEl = buildDpad();
-    api.setControls(dpadEl);
-  } else {
-    api.setControls(null);
-  }
 
   updateHud();
 
@@ -334,7 +352,7 @@ export function start(canvasEl, gameApi) {
         game.dieTimer -= dt;
         if (game.dieTimer <= 0) {
           const finished = game;
-          game = newGame();      // klaarzetten voor 'opnieuw'
+          game = newGame(rowsForSurface());   // klaarzetten voor 'opnieuw'
           loop.stop();
           api.gameOver({ score: finished.score, level: finished.level });
         }
@@ -375,7 +393,8 @@ export function serialize() {
   if (!game || game.phase === 'dying') return null;
   if (game.phase === 'ready' && game.score === 0) return null; // niets te bewaren
   return {
-    v: 1,
+    v: 2,
+    rows: game.rows,
     snake: game.snake.map((s) => [s.x, s.y]),
     dir: game.dir,
     apple: [game.apple.x, game.apple.y],
@@ -387,7 +406,17 @@ export function serialize() {
 }
 
 export function restore(state) {
-  if (!state || state.v !== 1 || !Array.isArray(state.snake) || state.snake.length === 0) return;
+  // v1 kende nog een vast aantal rijen; die potjes lezen we gewoon uit.
+  if (!state || (state.v !== 1 && state.v !== 2)) return;
+  if (!Array.isArray(state.snake) || state.snake.length === 0) return;
+
+  const rows = state.v === 2 ? state.rows : 22;
+  if (!Number.isFinite(rows) || rows < MIN_ROWS || rows > MAX_ROWS + 4) return;
+  // Past het bewaarde veld niet meer? Dan blijft de slang staan waar hij stond;
+  // het veld wordt gewoon met randen getekend.
+  game.rows = rows;
+  layout();
+
   game.snake = state.snake.map(([x, y]) => ({ x, y }));
   game.dir = DIRS[state.dir] ? state.dir : 'up';
   game.queued = [];
