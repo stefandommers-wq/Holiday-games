@@ -1,6 +1,6 @@
 # Arcade
 
-Vijf klassieke spelletjes in één webapp: Snake, Pong, Breakout, Blokken en Ruimte-invasie.
+Zes klassieke spelletjes in één webapp: Snake, Pong, Breakout, Blokken, Ruimte-invasie en Kisten.
 Draait vanaf het beginscherm van je telefoon, werkt volledig offline en is met een link te delen.
 
 Geen frameworks, geen build-stap, geen npm-pakketten. Alleen HTML, CSS en vanilla JavaScript.
@@ -39,6 +39,7 @@ De schil bewaart een onderbroken potje en vraagt bij het openen of je verder wil
 
 ```sh
 node tools/check-precache.mjs   # staat elk bestand in de service worker?
+node tools/check-levels.mjs     # zijn alle levels van Kisten op te lossen?
 ```
 
 Bij elke release `CACHE_VERSION` in `sw.js` ophogen, anders blijven toestellen op de oude versie hangen.

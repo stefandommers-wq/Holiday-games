@@ -2,7 +2,7 @@
 // Bij elke wijziging aan de bestandenlijst CACHE_VERSION ophogen, anders blijft
 // een toestel op de oude versie hangen.
 
-const CACHE_VERSION = 'arcade-v8';
+const CACHE_VERSION = 'arcade-v9';
 
 const PRECACHE = [
   './',
@@ -24,6 +24,7 @@ const PRECACHE = [
   './games/breakout.js',
   './games/blokken.js',
   './games/invasie.js',
+  './games/kisten.js',
   './icons/icon-192.png',
   './icons/icon-512.png',
   './icons/icon-maskable-512.png',

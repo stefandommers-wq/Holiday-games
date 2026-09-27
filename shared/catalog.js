@@ -46,6 +46,17 @@ export const GAMES = [
     levels: true,
     levelLabel: 'Golf',
   },
+  {
+    id: 'kisten',
+    name: 'Kisten',
+    sub: 'Duw elke kist op zijn plek.',
+    accent: 'var(--orange)',
+    module: './games/kisten.js',
+    levels: true,
+    levelLabel: 'Level',
+    // Puzzel zonder score: alleen hoe ver je bent gekomen telt.
+    score: false,
+  },
 ];
 
 export const GAME_IDS = GAMES.map((g) => g.id);

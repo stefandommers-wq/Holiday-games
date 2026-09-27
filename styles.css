@@ -12,6 +12,7 @@
   --green: #45f08a;
   --yellow: #ffd23d;
   --purple: #a06bff;
+  --orange: #ff8a3d;
   --danger: #ff5a5a;
 
   --safe-t: env(safe-area-inset-top, 0px);
@@ -288,6 +289,33 @@ body {
 .dpad .left { grid-column: 1; grid-row: 2; }
 .dpad .down { grid-column: 2; grid-row: 2; }
 .dpad .right { grid-column: 3; grid-row: 2; }
+
+/* Knoppenkolom (Kisten): acties boven het D-pad. */
+.pad-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.pad-actions {
+  display: flex;
+  gap: 8px;
+}
+.pad-action {
+  min-height: var(--tap);
+  padding: 0 14px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  touch-action: none;
+}
+.pad-action:active { background: rgba(255, 255, 255, .16); }
+.pad-action:disabled { opacity: .35; }
 
 /* ---------- Overlay / dialogen ---------- */
 

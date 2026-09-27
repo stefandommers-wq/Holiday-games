@@ -1,7 +1,7 @@
 {
   "name": "Arcade",
   "short_name": "Arcade",
-  "description": "Vijf klassieke spelletjes in één app. Werkt volledig offline.",
+  "description": "Zes klassieke spelletjes in één app. Werkt volledig offline.",
   "lang": "nl",
   "start_url": "./",
   "scope": "./",

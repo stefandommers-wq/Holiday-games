@@ -8,7 +8,7 @@ import { dialog, closeAnyDialog, isDialogOpen, setHud, statsHtml, escapeHtml } f
 
 // Loopt gelijk met CACHE_VERSION in sw.js, zodat je op het toestel kunt zien
 // welke versie er draait.
-const APP_VERSION = 'v8';
+const APP_VERSION = 'v9';
 
 const screens = {
   menu: document.getElementById('screen-menu'),
@@ -139,7 +139,9 @@ function renderMenu() {
 
     const high = storage.getHighscore(def.id);
     const progress = storage.getProgress(def.id);
-    const chips = [`<span class="chip">Top ${high}</span>`];
+    const chips = [];
+    // Een puzzel zonder score toont geen 'Top', alleen hoe ver je bent.
+    if (def.score !== false) chips.push(`<span class="chip">Top ${high}</span>`);
     if (def.levels && progress > 1) {
       chips.push(`<span class="chip">${escapeHtml(def.levelLabel || 'Level')} ${progress}</span>`);
     }
@@ -361,7 +363,7 @@ function renderSettings() {
       <button class="switch" id="set-sound" role="switch" aria-checked="${s.sound}" aria-label="Geluid"></button>
     </div>
     <div class="setting-row">
-      <span class="label">D-pad bij Snake<small>Knoppen onderaan naast swipen</small></span>
+      <span class="label">D-pad<small>Knoppen onderaan bij Snake en Kisten</small></span>
       <button class="switch" id="set-dpad" role="switch" aria-checked="${s.dpad}" aria-label="D-pad"></button>
     </div>
     <p class="section-title">Op je beginscherm</p>

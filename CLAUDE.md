@@ -1,5 +1,5 @@
 Arcade
-Offline arcade-app voor de iPhone. Vijf klassieke spelletjes in één webapp die vanaf het beginscherm start en volledig zonder internet werkt.
+Offline arcade-app voor de iPhone. Zes klassieke spelletjes in één webapp die vanaf het beginscherm start en volledig zonder internet werkt.
 Harde regels
 Geen frameworks, geen build-stap, geen npm dependencies. Alleen HTML, CSS en vanilla JavaScript in ES modules.
 Geen enkele externe URL. Geen CDN, geen Google Fonts, geen analytics, geen externe afbeeldingen. Alles staat in de repo.
@@ -30,7 +30,7 @@ Stijl
 Donker retro-arcade thema met één kleurpalet voor alle spelletjes. Eén lettertype, lokaal meegeleverd of een systeemfont.
 Raakvlakken minimaal 44 bij 44 punten.
 Elk spel heeft dezelfde opbouw. Titel, highscore, grote speelknop, en een terugknop die altijd op dezelfde plek staat.
-Menu en spel voelen als één product, niet als vijf losse projecten onder één dak.
+Menu en spel voelen als één product, niet als losse projecten onder één dak.
 Werkwijze
 Eén spel of één afgeronde functie per pull request. Niet meerdere spelletjes tegelijk.
 Geen refactor van bestaande spelletjes tenzij ik daar expliciet om vraag.
