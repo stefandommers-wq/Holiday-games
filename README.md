@@ -42,4 +42,11 @@ node tools/check-precache.mjs   # staat elk bestand in de service worker?
 node tools/check-levels.mjs     # zijn alle levels van Kisten op te lossen?
 ```
 
+De zestig levels van Kisten zijn gemaakt met `tools/generate-levels.mjs`: dat
+script begint bij de opgeloste stand en trekt de kisten daar weg, zodat elk
+level per constructie oplosbaar is. `tools/check-levels.mjs` speelt de bewaarde
+oplossingen uit `tools/kisten-solutions.json` na; met `--solve` rekent hij ze
+allemaal opnieuw uit.
+
+
 Bij elke release `CACHE_VERSION` in `sw.js` ophogen, anders blijven toestellen op de oude versie hangen.

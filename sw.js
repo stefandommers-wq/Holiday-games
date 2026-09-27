@@ -2,7 +2,7 @@
 // Bij elke wijziging aan de bestandenlijst CACHE_VERSION ophogen, anders blijft
 // een toestel op de oude versie hangen.
 
-const CACHE_VERSION = 'arcade-v10';
+const CACHE_VERSION = 'arcade-v11';
 
 const PRECACHE = [
   './',

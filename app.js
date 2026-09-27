@@ -8,7 +8,7 @@ import { dialog, closeAnyDialog, isDialogOpen, setHud, statsHtml, escapeHtml } f
 
 // Loopt gelijk met CACHE_VERSION in sw.js, zodat je op het toestel kunt zien
 // welke versie er draait.
-const APP_VERSION = 'v10';
+const APP_VERSION = 'v11';
 
 const screens = {
   menu: document.getElementById('screen-menu'),

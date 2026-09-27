@@ -1,0 +1,302 @@
+[
+ {
+  "pushes": 1,
+  "moves": 6,
+  "solution": "uluurd"
+ },
+ {
+  "pushes": 2,
+  "moves": 2,
+  "solution": "rr"
+ },
+ {
+  "pushes": 2,
+  "moves": 2,
+  "solution": "ll"
+ },
+ {
+  "pushes": 2,
+  "moves": 4,
+  "solution": "ulrr"
+ },
+ {
+  "pushes": 3,
+  "moves": 11,
+  "solution": "lulurddrrdl"
+ },
+ {
+  "pushes": 3,
+  "moves": 13,
+  "solution": "luuuurdrdluld"
+ },
+ {
+  "pushes": 4,
+  "moves": 8,
+  "solution": "drulurrr"
+ },
+ {
+  "pushes": 4,
+  "moves": 8,
+  "solution": "dluulurr"
+ },
+ {
+  "pushes": 4,
+  "moves": 8,
+  "solution": "dlurulll"
+ },
+ {
+  "pushes": 4,
+  "moves": 10,
+  "solution": "luurdrdlll"
+ },
+ {
+  "pushes": 5,
+  "moves": 17,
+  "solution": "lulllddrrurulluld"
+ },
+ {
+  "pushes": 6,
+  "moves": 10,
+  "solution": "drdlllldlu"
+ },
+ {
+  "pushes": 6,
+  "moves": 18,
+  "solution": "uullluurrrdrrddlll"
+ },
+ {
+  "pushes": 6,
+  "moves": 20,
+  "solution": "uluuuuldddrddrrrruuu"
+ },
+ {
+  "pushes": 6,
+  "moves": 20,
+  "solution": "lddrulurrdddllluurul"
+ },
+ {
+  "pushes": 8,
+  "moves": 25,
+  "solution": "luuluuluurddddrddrrrruuuu"
+ },
+ {
+  "pushes": 8,
+  "moves": 27,
+  "solution": "ruulldldluuudrrrrddluuurull"
+ },
+ {
+  "pushes": 8,
+  "moves": 36,
+  "solution": "lluulldddrdrrrudlluurrdruudllldllldr"
+ },
+ {
+  "pushes": 8,
+  "moves": 41,
+  "solution": "ldddrruuruulddlulllddrrurullrddlluurrdrrd"
+ },
+ {
+  "pushes": 10,
+  "moves": 24,
+  "solution": "lullddluuuulurrdddddruuu"
+ },
+ {
+  "pushes": 10,
+  "moves": 26,
+  "solution": "uuuruldrrrddldluudrruullll"
+ },
+ {
+  "pushes": 10,
+  "moves": 28,
+  "solution": "uullullddruurullddrrrdrdllll"
+ },
+ {
+  "pushes": 10,
+  "moves": 41,
+  "solution": "ruuullululllddrrurullrrrrddrddllrruuldrdl"
+ },
+ {
+  "pushes": 11,
+  "moves": 47,
+  "solution": "uruulludrrddlluddlluuurrrurddullddrrrdruddlllll"
+ },
+ {
+  "pushes": 12,
+  "moves": 30,
+  "solution": "urrddldluuulurrrrdddddluuuulur"
+ },
+ {
+  "pushes": 12,
+  "moves": 38,
+  "solution": "llddrrruuurulllddlddruuruldddrrruuulur"
+ },
+ {
+  "pushes": 12,
+  "moves": 42,
+  "solution": "luuuruurrdrdlllddlddrruldluurulrurrrdddlll"
+ },
+ {
+  "pushes": 12,
+  "moves": 53,
+  "solution": "durrdulllldldlddrrruurlddrruuluurrdduulllldldddldrrrr"
+ },
+ {
+  "pushes": 14,
+  "moves": 30,
+  "solution": "urullrdddrruuuurulddddddruuuuu"
+ },
+ {
+  "pushes": 14,
+  "moves": 44,
+  "solution": "lddruudrrrrdlullddrurullldlurulddrrrrrdlllll"
+ },
+ {
+  "pushes": 14,
+  "moves": 45,
+  "solution": "ullurdruudlluurrdddddlulurrrrdrulurdddllulurr"
+ },
+ {
+  "pushes": 14,
+  "moves": 50,
+  "solution": "luullllddruulurdrrrddddruruldluuulurdlllddlddrrrrr"
+ },
+ {
+  "pushes": 14,
+  "moves": 56,
+  "solution": "lddrruruuulullllrrrrdrddllrddlluuruldlurulddrrdrdluldrdl"
+ },
+ {
+  "pushes": 15,
+  "moves": 46,
+  "solution": "ruuulllddruulurddrrdddruuuurulddddddrruuuurull"
+ },
+ {
+  "pushes": 16,
+  "moves": 42,
+  "solution": "uulurrrrdddddllluuruulldrurdldrrrurdldrurd"
+ },
+ {
+  "pushes": 16,
+  "moves": 42,
+  "solution": "lullddrurullrrrrdlldurrrdluldldurddlllldlu"
+ },
+ {
+  "pushes": 16,
+  "moves": 50,
+  "solution": "drruruuldddlddlurullldlurrrrrdlddllurulllrrrrrdrdl"
+ },
+ {
+  "pushes": 16,
+  "moves": 57,
+  "solution": "rururuuuurrddddllurdldldlluuuuulurrlddrrrddrrduruulddrddl"
+ },
+ {
+  "pushes": 18,
+  "moves": 49,
+  "solution": "uldrrrurdlllldurdurrdrurdulllldldurdldrrllldrrrrr"
+ },
+ {
+  "pushes": 18,
+  "moves": 57,
+  "solution": "luuluurrrrdrdddruluurrdlulddrdlldldllluurrddurrdldllrrrrr"
+ },
+ {
+  "pushes": 18,
+  "moves": 64,
+  "solution": "uullullllluurrrrrrllllldurrrdlllldrurdurrdlldurrrdluldrrrdddrdll"
+ },
+ {
+  "pushes": 18,
+  "moves": 106,
+  "solution": "uulluuluurdurrdurrdlllldurrrdlrrurdullllldduurrdlrrrrduullllllddrduluurddurrrrrddlddlllllurrlluurdrrrrrrdl"
+ },
+ {
+  "pushes": 18,
+  "moves": 120,
+  "solution": "uuuluullulddurrdrdrrurullrddlddllullluruurrdrdrrrdlullulullddddrrrrudllulluuurrdrdrdrruuulluldrrdrddluurullrdddldldldrrr"
+ },
+ {
+  "pushes": 20,
+  "moves": 59,
+  "solution": "drruuruuuullllldlddrddrruuurulldrddrrdruudlluurrddlldrdllll"
+ },
+ {
+  "pushes": 20,
+  "moves": 60,
+  "solution": "lluuuuuurrdlddrruldlurullllrddrdddruuuurulllddrdddrruuurulll"
+ },
+ {
+  "pushes": 20,
+  "moves": 64,
+  "solution": "rddlluurulldludddrrruuudddldddluurullrrrrddlruulldlddruuuuurulll"
+ },
+ {
+  "pushes": 20,
+  "moves": 83,
+  "solution": "dlluuuuulllldrurdrdrddlluludrdrruuuulllldrrrrrrurdlllllldrrurdurrrdullldddurdldrurd"
+ },
+ {
+  "pushes": 20,
+  "moves": 92,
+  "solution": "ruuldldurrrdullldduurrdluldrrdrurdlldllrruulldldururrddllrrurrdullddllllrruuldrddllludrrrull"
+ },
+ {
+  "pushes": 21,
+  "moves": 48,
+  "solution": "ruuruulurrrrrdddldlddlluuuuulurrrrddddlddruulurr"
+ },
+ {
+  "pushes": 21,
+  "moves": 63,
+  "solution": "drllddrrruuuuurullddrddddllulurrlddrruuuruulldrurdldrrrlllddrrr"
+ },
+ {
+  "pushes": 22,
+  "moves": 46,
+  "solution": "luuurulldluuddddrdruuulurrrrdruddddllluulurrrr"
+ },
+ {
+  "pushes": 22,
+  "moves": 52,
+  "solution": "uurulluuurddldluldurrrrdlllllldlurrrrdllurrrrddlllll"
+ },
+ {
+  "pushes": 22,
+  "moves": 69,
+  "solution": "luuuuurruulllllddddlldddrruuuuuddllddrdruuuuddddrrrruuruldluudrruulll"
+ },
+ {
+  "pushes": 22,
+  "moves": 71,
+  "solution": "uuuluurullrddddrdrruulullddruulurrrrllddlddddllluuddrrrruruldluuuulurrr"
+ },
+ {
+  "pushes": 22,
+  "moves": 89,
+  "solution": "dluldllddrrrrrruulllllulddurrdurrdulllldduurrdduurrrrddlllluullddduuurrddlruullddrrrdluld"
+ },
+ {
+  "pushes": 24,
+  "moves": 88,
+  "solution": "uurrurlddlldrurrddlulurrrrurrddlurulddddddllllluuuulurrrrrrurddullldldlldrrrrlluuurrrddd"
+ },
+ {
+  "pushes": 25,
+  "moves": 69,
+  "solution": "rdllllddrrddluurullddrdrruuulurdrulurdruuruldddlddddruruldluuulurdruu"
+ },
+ {
+  "pushes": 25,
+  "moves": 98,
+  "solution": "ururrddlulurdrulurrrdlldllldrurrddluulurdrulurrdrdrdlddlllluruulldrurddurrrrdlllldrrrrurdlllllldrr"
+ },
+ {
+  "pushes": 27,
+  "moves": 177,
+  "solution": "lddrrurrruulluulllddduurrdrrduluurdllllddduullddddrrrrrruruuldllddllluluuurrurrrrdullllddddlluururdduuurrdrrrddlduruulddllddllrururruuullllddddldrurdrdrrrullrruuldrddlluldrrrull"
+ },
+ {
+  "pushes": 31,
+  "moves": 117,
+  "solution": "dddrrrruululuulurrrdrulurrddrdddddllllllluuuurlddddrrrruululuulurrrrdllldllddruuuruulldrrrrdllddldlddruuulurdrulurrrr"
+ }
+]
