@@ -8,7 +8,7 @@
 //   @  speler    +  speler op doelvak    (spatie) vloer
 
 import { createSurface, roundRect } from '../shared/surface.js';
-import { createInput, createKeys } from '../shared/input.js';
+import { createKeys } from '../shared/input.js';
 
 export const LEVELS = [
   // 1 — recht vooruit duwen
@@ -140,7 +140,6 @@ const DIRS = {
 };
 
 let surface = null;
-let input = null;
 let keys = null;
 let api = null;
 let controlsEl = null;
@@ -451,9 +450,8 @@ function buildControls() {
   actions.append(undoBtn, again);
   wrap.appendChild(actions);
 
-  // Swipen kan altijd; het D-pad is een keuze in de instellingen.
-  if (!api.settings().dpad) return wrap;
-
+  // Het D-pad is hier de enige manier om te lopen, dus het staat er altijd.
+  // Swipen zou te grof zijn: in een puzzel wil je precies één vakje per zet.
   const dpad = document.createElement('div');
   dpad.className = 'dpad';
   for (const [dir, label, cls] of [
@@ -489,11 +487,8 @@ export function start(canvasEl, gameApi) {
   game = loadLevel(Math.max(0, Math.min(LEVELS.length - 1, api.getProgress() - 1)));
   layout();
 
-  // Swipen mag over het hele speelvlak; de knoppen sturen zelf.
-  input = createInput(api.stage || canvasEl, {
-    onSwipe: (dir) => move(dir),
-  }, { origin: canvasEl, ignore: '.pad-column' });
-
+  // Bewust geen swipes: één veeg vuurt onderweg meerdere keren, en dan schiet
+  // je zo drie vakjes door. Lopen gaat alleen met de pijltjes.
   keys = createKeys({
     ArrowUp: () => move('up'),
     ArrowDown: () => move('down'),
@@ -524,11 +519,9 @@ function scheduleNext(delayMs) {
 export function stop() {
   clearTimeout(solvedTimer);
   solvedTimer = 0;
-  input?.destroy();
   keys?.destroy();
   surface?.destroy();
   api?.setControls(null);
-  input = null;
   keys = null;
   surface = null;
   controlsEl = null;
